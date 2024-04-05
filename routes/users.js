@@ -9,7 +9,30 @@ router.get('protected', (req, res, next) => {
 });
 
 // TODO
-router.post('/login', function(req, res, next) {});
+router.post('/login', function(req, res, next) {
+    User.findOne({ username: req.body.username })
+        .then((user) => {
+
+            if (!user) {
+                res.status(401).json({ success: false, msg: "could not find user"});
+            }
+
+            const isValid = utils.validPassword(req.body.password, user.hash, user.salt);
+
+            if (isValid) {
+
+                const tokenObject = utils.issueJWT(user);
+
+                res.status(200).json({ success: true, user: user, token: tokenObject.token, expiresIn: tokenObject.expires });
+            } else {
+                
+                res.status(401).json({ success: false, msg: "you entered the wrong password"});
+            }
+        })
+        .catch((err) => {
+            next(err);
+        });
+});
 
 // TODO
 router.post('/register', function(req, res, next){
