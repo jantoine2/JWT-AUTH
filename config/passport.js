@@ -11,7 +11,11 @@ const PUB_KEY = fs.readFileSync(pathToKey, 'utf8');
 
 
 // TODO
-const options = {};
+const options = {
+    jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+    secretOrKey: PUB_KEY,
+    algorithm: ['RS256']
+};
 
 // TODO
 module.exports = (passport) => {}
