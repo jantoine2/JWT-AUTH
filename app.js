@@ -11,7 +11,7 @@ const passport = require('passport');
 require('dotenv').config();
 
 // Create the Express application
-let app = express();
+const app = express();
 
 // Configures the database and opens a global connection that can be used in any module
 require('./config/database');
@@ -26,6 +26,7 @@ require('./config/passport')('passport');
 app.use(passport.initialize());
 
 // Instead of using body-parser middleware, use the new Express implementation of the same thing
+
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
