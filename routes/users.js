@@ -5,10 +5,11 @@ const passport = require('passport');
 const utils = require('../lib/utils');
 
 // TODO
-router.get('protected', (req, res, next) => {
+router.get('protected', passport.authenticate('jwt', {session: false}), (req, res, next) => {
+    res.status(200).json({ success: true, msg: "You are successfully authenticated to this route!"});
 });
 
-// TODO
+
 router.post('/login', function(req, res, next) {
     User.findOne({ username: req.body.username })
         .then((user) => {
@@ -34,7 +35,6 @@ router.post('/login', function(req, res, next) {
         });
 });
 
-// TODO
 router.post('/register', function(req, res, next){
     const saltHash = utils.genPassword(req.body.password);
 
